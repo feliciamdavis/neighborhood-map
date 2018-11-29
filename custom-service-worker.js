@@ -6,7 +6,6 @@
 
 /** List of all the things */
 const filesToCache = [
-    '/neighborhood-map/index.html',
     'https://fonts.googleapis.com/css?family=Roboto:400,700',
     'https://unpkg.com/leaflet@1.3.1/dist/leaflet.css',
     'https://unpkg.com/leaflet@1.3.1/dist/leaflet.js',
@@ -33,7 +32,7 @@ self.addEventListener('fetch', event => {
             }
             else {
                 console.log(`Network request for ${event.request.url}`)
-                return fetch(event.request).then(response => {
+                return fetch(event.request, { mode: 'no-cors' }).then(response => {
                     return caches.open(staticCacheName).then(cache => {
                         cache.put(event.request.url, response.clone())
                         return response
