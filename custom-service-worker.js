@@ -27,13 +27,14 @@ self.addEventListener('fetch', event => {
     event.respondWith(
         caches.match(event.request).then(response => {
             if (response) {
-                console.log(`Found ${event.request.url} in cache`)
+                console.log(`Found cached response for ${event.request.url}`)
                 return response
             }
             else {
                 console.log(`Network request for ${event.request.url}`)
                 return fetch(event.request).then(response => {
                     return caches.open(staticCacheName).then(cache => {
+                        console.log(`Caching response for ${event.request.url}`)
                         cache.put(event.request.url, response.clone())
                         return response
                     })
