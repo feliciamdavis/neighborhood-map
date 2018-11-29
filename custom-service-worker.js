@@ -4,9 +4,6 @@
  * - https://developers.google.com/web/ilt/pwa/lab-caching-files-with-service-worker
  */
 
-// Include the worker built by the react scripts
-importScripts('./service-worker.js')
-
 /** List of all the things */
 const filesToCache = [
     '/neighborhood-map/index.html',
@@ -42,3 +39,6 @@ self.addEventListener('fetch', event => {
     })
     // )
 })
+
+// Include the worker built by the react scripts
+importScripts('./service-worker.js')
