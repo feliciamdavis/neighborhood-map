@@ -16,29 +16,34 @@ const filesToCache = [
 const staticCacheName = 'sw-precache-v3-sw-precache-webpack-plugin-' + (self.registration ? self.registration.scope : '')
 
 
-self.addEventListener('install', event => {
+self.addEventListener('install', () => {
     console.log('Attempting to install service worker and cache static assets')
-    // event.waitUntil(
     caches.open(staticCacheName).then(cache => {
         return cache.addAll(filesToCache)
     })
-    // )
 })
 
 self.addEventListener('fetch', event => {
     console.log(`Fetch event for ${event.request.url}`)
-    // event.respondWith(
-    caches.match(event.request).then(response => {
-        if (!response) {
-            fetch(event.request).then(response => {
-                caches.open(staticCacheName).then(cache => {
-                    cache.put(event.request.url, response.clone())
+    event.respondWith(
+        caches.match(event.request).then(response => {
+            if (response) {
+                console.log(`Found ${event.request.url} in cache`)
+                return response
+            }
+            else {
+                console.log(`Network request for ${event.request.url}`)
+                return fetch(event.request).then(response => {
+                    return caches.open(staticCacheName).then(cache => {
+                        cache.put(event.request.url, response.clone())
+                        return response
+                    })
                 })
-            })
-        }
-    })
-    // )
+            }
+        })
+    )
 })
 
 // Include the worker built by the react scripts
 importScripts('./service-worker.js')
+
