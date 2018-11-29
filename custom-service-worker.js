@@ -16,12 +16,12 @@ const filesToCache = [
 ]
 
 /** Our cache name */
-const staticCacheName = 'pages-cache-v1'
+const cacheName = 'sw-precache-v3-sw-precache-webpack-plugin-' + (self.registration ? self.registration.scope : '')
 
 self.addEventListener('install', event => {
     console.log('Attempting to install service worker and cache static assets')
     event.waitUntil(
-        caches.open(staticCacheName).then(cache => {
+        caches.open(cacheName).then(cache => {
             return cache.addAll(filesToCache)
         })
     )
@@ -33,7 +33,7 @@ self.addEventListener('activate', event => {
         caches.keys().then(cacheNames => {
             return Promise.all(
                 cacheNames.map(cacheName => {
-                    if (cacheName !== staticCacheName) {
+                    if (cacheName !== cacheName) {
                         return caches.delete(cacheName)
                     }
                 })
@@ -53,7 +53,7 @@ self.addEventListener('fetch', event => {
             else {
                 console.log(`Network request for ${event.request.url}`)
                 return fetch(event.request).then(response => {
-                    return caches.open(staticCacheName).then(cache => {
+                    return caches.open(cacheName).then(cache => {
                         cache.put(event.request.url, response.clone())
                         return response
                     })
