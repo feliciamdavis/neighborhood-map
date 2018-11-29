@@ -32,7 +32,7 @@ self.addEventListener('fetch', event => {
             }
             else {
                 console.log(`Network request for ${event.request.url}`)
-                return fetch(event.request, { mode: 'no-cors' }).then(response => {
+                return fetch(event.request).then(response => {
                     return caches.open(staticCacheName).then(cache => {
                         cache.put(event.request.url, response.clone())
                         return response
