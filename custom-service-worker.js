@@ -20,7 +20,7 @@ self.addEventListener('install', () => {
     caches.open(staticCacheName).then(cache => {
         return Promise.all(urlsToCache.map(url => {
             console.log(`Network request for ${url}`)
-            return fetch(event.request)
+            return fetch(url)
                 .then(response => {
                     console.log(`Caching response for ${url}`)
                     cache.put(url, response.clone())
