@@ -40,17 +40,8 @@ self.addEventListener('fetch', event => {
                         .then(response => {
                             console.log(`Caching response for ${event.request.url}`)
                             cache.put(event.request.url, response.clone())
-                                .catch(err => {
-                                    console.error(err)
-                                    throw err
-                                })
                             return response
                         })
-                        .catch(err => {
-                            console.error(err)
-                            throw err
-                        })
-
                 })
         })
     )
