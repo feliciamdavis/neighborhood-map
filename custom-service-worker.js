@@ -36,7 +36,7 @@ function fetchWithCaching(url) {
             })
             .catch(() => {
                 console.log(`Network request for ${url}`)
-                return fetch(event.request)
+                return fetch(url)
                     .then(response => {
                         console.log(`Caching response for ${url}`)
                         if (response.type === 'opaque' || response.ok === true) {
