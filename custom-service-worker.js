@@ -36,7 +36,11 @@ self.addEventListener('fetch', event => {
                     .then(response => {
                         return caches.open(staticCacheName).then(cache => {
                             console.log(`Caching response for ${event.request.url}`)
-                            cache.put(event.request.url, response.clone())
+                            cache.put(event.request, response.clone())
+                                .catch(err => {
+                                    console.error(err)
+                                    throw err
+                                })
                             return response
                         })
                     })
