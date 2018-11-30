@@ -61,7 +61,9 @@ self.addEventListener('fetch', event => {
                     return fetch(event.request)
                         .then(response => {
                             console.log(`Caching response for ${url}`)
-                            cache.put(url, response.clone())
+                            if (response.type === 'opaque' || response.ok === true) {
+                                cache.put(url, response.clone())
+                            }
                             return response
                         })
                 })
