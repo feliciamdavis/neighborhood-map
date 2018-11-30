@@ -9,6 +9,9 @@ const urlsToCache = [
     'https://fonts.googleapis.com/css?family=Roboto:400,700',
     'https://unpkg.com/leaflet@1.3.1/dist/leaflet.css',
     'https://unpkg.com/leaflet@1.3.1/dist/leaflet.js',
+    'https://unpkg.com/leaflet@1.3.1/dist/images/marker-icon.png',
+    'https://unpkg.com/leaflet@1.3.1/dist/images/marker-icon-2x.png',
+    'https://unpkg.com/leaflet@1.3.1/dist/images/marker-shadow.png',
 ]
 
 /** Our cache name */
@@ -30,6 +33,11 @@ self.addEventListener('install', () => {
 })
 
 self.addEventListener('fetch', event => {
+    // Workaround a weird Chrome bug: https://stackoverflow.com/questions/48463483/what-causes-a-failed-to-execute-fetch-on-serviceworkerglobalscope-only-if
+    if (event.request.cache === 'only-if-cached' && event.request.mode !== 'same-origin') {
+        return
+    }
+
     let url = event.request.url
 
     // add index.html if no file was given so we can find it in the cache
