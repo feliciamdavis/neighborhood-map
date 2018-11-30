@@ -22,9 +22,7 @@ self.addEventListener('install', () => {
             return fetch(url)
                 .then(response => {
                     console.log(`Caching response for ${url}`)
-                    if (response.ok === true || !response.status === 0) {
-                        cache.put(url, response.clone())
-                    }
+                    cache.put(url, response.clone())
                     return response
                 })
         }))
@@ -55,9 +53,7 @@ self.addEventListener('fetch', event => {
                     return fetch(event.request)
                         .then(response => {
                             console.log(`Caching response for ${url}`)
-                            if (response.ok === true || !response.status === 0) {
-                                cache.put(url, response.clone())
-                            }
+                            cache.put(url, response.clone())
                             return response
                         })
                 })
