@@ -26,7 +26,7 @@ self.addEventListener('fetch', event => {
     console.log(`Fetch event for ${event.request.url}`)
     event.respondWith(
         caches.open(staticCacheName).then(cache => {
-            cache.match(event.request.url)
+            return cache.match(event.request.url)
                 .then(response => {
                     if (response) {
                         console.log(`Found cached response for ${event.request.url}`)
