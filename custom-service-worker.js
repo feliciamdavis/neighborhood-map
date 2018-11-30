@@ -6,6 +6,7 @@
 
 /** List of all the things */
 const urlsToCache = [
+    'https://feliciamdavis.github.io/neighborhood-map/',
     'https://fonts.googleapis.com/css?family=Roboto:400,700',
     'https://unpkg.com/leaflet@1.3.1/dist/leaflet.css',
     'https://unpkg.com/leaflet@1.3.1/dist/leaflet.js',
