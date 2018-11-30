@@ -25,30 +25,33 @@ self.addEventListener('install', () => {
 self.addEventListener('fetch', event => {
     console.log(`Fetch event for ${event.request.url}`)
     event.respondWith(
-        caches.match(event.request).then(response => {
-            if (response) {
-                console.log(`Found cached response for ${event.request.url}`)
-                return response
-            }
-            else {
-                console.log(`Network request for ${event.request.url}`)
-                return fetch(event.request)
-                    .then(response => {
-                        return caches.open(staticCacheName).then(cache => {
+        caches.open(staticCacheName).then(cache => {
+            cache.match(event.request.url)
+                .then(response => {
+                    if (response) {
+                        console.log(`Found cached response for ${event.request.url}`)
+                        return response
+                    }
+                    throw new Error(`Found cached response is empty for ${event.request.url}`)
+                })
+                .catch(() => {
+                    console.log(`Network request for ${event.request.url}`)
+                    return fetch(event.request)
+                        .then(response => {
                             console.log(`Caching response for ${event.request.url}`)
-                            cache.put(event.request, response.clone())
+                            cache.put(event.request.url, response.clone())
                                 .catch(err => {
                                     console.error(err)
                                     throw err
                                 })
                             return response
                         })
-                    })
-                    .catch(err => {
-                        console.error(err)
-                        throw err
-                    })
-            }
+                        .catch(err => {
+                            console.error(err)
+                            throw err
+                        })
+
+                })
         })
     )
 })
