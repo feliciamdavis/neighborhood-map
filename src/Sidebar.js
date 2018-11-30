@@ -49,7 +49,7 @@ export class Sidebar extends React.Component {
         return (
             <div>
                 <div className="filter-bar">
-                    <input type="text" placeholder="Filter by Location Name" onChange={this.filterTextChanged}></input>
+                    <input aria-label="Filter by Location Name" type="text" placeholder="Filter by Location Name" onChange={this.filterTextChanged}></input>
                 </div>
                 <div className="filter-results">
                     {

@@ -28,12 +28,22 @@ export class App extends React.Component {
         // Bind event handlers to *this* this
         this.updateFilterText = this.updateFilterText.bind(this)
         this.updateSelectedPlace = this.updateSelectedPlace.bind(this)
+    }
+
+    start() {
+        if (this.started) return
+        this.started = true
+
         // Get venues from Foursquare & update state
-        FourSquareAPI.getVenues(this.state.center.lat, this.state.center.lng).then(places => {
-            this.setState({
-                places: places.response.groups[0].items
+        FourSquareAPI.getVenues(this.state.center.lat, this.state.center.lng)
+            .then(places => {
+                this.setState({
+                    places: places.response.groups[0].items,
+                })
             })
-        })
+            .catch(() => {
+                alert('Unable to retrieve location information from Foursquare')
+            })
     }
 
     updateFilterText(newFilterText) {
