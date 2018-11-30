@@ -5,7 +5,7 @@
  */
 
 /** List of all the things */
-const filesToCache = [
+const urlsToCache = [
     'https://fonts.googleapis.com/css?family=Roboto:400,700',
     'https://unpkg.com/leaflet@1.3.1/dist/leaflet.css',
     'https://unpkg.com/leaflet@1.3.1/dist/leaflet.js',
@@ -18,7 +18,15 @@ const staticCacheName = 'sw-precache-v3-sw-precache-webpack-plugin-' + (self.reg
 self.addEventListener('install', () => {
     console.log('Attempting to install service worker and cache static assets')
     caches.open(staticCacheName).then(cache => {
-        return cache.addAll(filesToCache)
+        return Promise.all(urlsToCache.map(url => {
+            console.log(`Network request for ${url}`)
+            return fetch(event.request)
+                .then(response => {
+                    console.log(`Caching response for ${url}`)
+                    cache.put(url, response.clone())
+                    return response
+                })
+        }))
     })
 })
 
