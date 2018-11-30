@@ -4,9 +4,15 @@ import * as serviceWorker from './serviceWorker'
 import { App } from './App'
 import './index.css'
 
-const app = ReactDOM.render(<App />, document.getElementById('root'))
+let started = false
+function startApp() {
+    if (started) return
+    started = true
+
+    ReactDOM.render(<App />, document.getElementById('root'))
+}
 
 serviceWorker.register()
 
-navigator.serviceWorker.ready.then(() => app.start())
-setTimeout(() => app.start(), 250)
+navigator.serviceWorker.ready.then(() => startApp())
+setTimeout(() => startApp(), 5000)
